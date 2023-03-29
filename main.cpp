@@ -3,6 +3,9 @@
 
 using namespace std;
 
+vector<int> numbs;
+int a = 0;
+
 bool isCorrect(int a) {
 
     if (cin.fail()) {
@@ -18,35 +21,36 @@ bool isCorrect(int a) {
     }
 }
 
-vector<int> bubbleSort(vector<int> vec) {
-
-    for (int i = 0; i < vec.size(); ++i) {
-        for (int j = 0; j < vec.size() - i - 1; ++j) {
-            if (vec[j] > vec[j + 1]) {
-                int tmp = vec[j];
-                vec[j] = vec[j + 1];
-                vec[j + 1] = tmp;
+void algorithm(int a) {
+    if (numbs.empty()) {
+        numbs.push_back(a);
+    } else {
+        bool findInd = false;
+        for (int i = 0; i < numbs.size(); ++i) {
+            if (numbs[i] > a) {
+                findInd = true;
+                auto iter = numbs.begin();
+                numbs.insert(iter + i, a);
+                break;
             }
         }
+        if (!findInd) numbs.push_back(a);
     }
-    return vec;
+    if (numbs.size() > 5) numbs.pop_back();
 }
 
 int main() {
-    vector<int> numbs;
-    int a = 0;
 
     do {
         cout << "Input the number: ";
         cin >> a;
         if (isCorrect(a) && a != -1) {
-            numbs.push_back(a);
+            algorithm(a);
         } else if (a == -1) {
-            if (numbs.size() > 5) {
-                numbs = bubbleSort(numbs);
-                cout << "The fifth highest number among the entered is " << numbs[4] << endl;
-            } else {
+            if (numbs.size() < 5) {
                 cerr << "You entered less than 5 digits" << endl;
+            } else {
+                cout << "The fifth highest number among the entered is " << numbs[4] << endl;
             }
 
         }
